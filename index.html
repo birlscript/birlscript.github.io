@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt_BR">
 
 <head>
   <meta charset='utf-8'>
@@ -12,13 +12,14 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   <!-- CodeMirror stuff -->
-  <link rel="shortcut icon" type="image/png" href="image/favicon.png" />
   <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.css">
   <script type="text/javascript" src="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.js"></script>
   <script type="text/javascript" src="https://cdn.rawgit.com/codemirror/CodeMirror/master/mode/xml/xml.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" href="stylesheets/themes/main.css">
   <script src="javascripts/modes/javascript.js"></script>
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
   <title>BIRLSCRIPT</title>
 </head>
 
@@ -31,26 +32,30 @@
       </header>
 
       <section id="downloads" class="clearfix">
-        <a href="https://github.com/birlscript/birlscript" id="view-on-github" class="button"><span>Veja no GitHub</span></a>
+        <a href="https://github.com/birlscript/birlscript" id="view-on-github" class="button"><span>Repo no GitHub</span></a>
       </section>
 
       <hr>
 
       <section id="main_content">
         <h1>
-            <a id="birlscript" class="anchor" href="#birlscript" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BIRLSCRIPT</h1>
+            <a id="birlscript" class="anchor" href="#birlscript" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span>BIRLSCRIPT</a>
+        </h1>
+        <p><strong>Versão: </strong>1.1.4</p>
         <p>É a linguagem de programação dos codebuilders, que não saem de casa sem codar pra caralho!</p>
         <br>
         <p>Se você se sente apto pro desafio, vá em frente e teste no console abaixo. Veja <a href="#">tutoriais e mais exemplos</a>.</p>
         <br>
         <textarea id="code" style="resize: none; text-align: left"></textarea>
-        <center><textarea id="result" style="width: 95%; background-color: #282828; color: white; font-family: arial; font-size: 16px; resize: none" readonly>Aguardando...</textarea></center>
-        <br>
-        <input type="submit" class="button" name="insert" value="Rodar" />
+        <center>
+          <textarea id="result" style="width: 95%; background-color: #282828; color: white; font-family: arial; font-size: 16px; resize: none" readonly>Aguardando...</textarea>
+          <br>
+          <input type="submit" class="button" name="insert" value="Rodar" />
+        </center>
       </section>
 
       <footer>
-        Copyleft (c) Rafael Rodrigues Nakano, <a href="mailto:mseqs@bsd.com.br">mseqs@bsd.com.br</a>, nenhum direito reservado.
+        Copyleft (c) 2016 Rafael R Nakano, <a href="mailto:mseqs@bsd.com.br">mseqs@bsd.com.br</a>, nenhum direito reservado.
       </footer>
 
 
@@ -62,7 +67,7 @@
   document.getElementById("code").textContent = "JAULA SHOW\n\tCE QUER VER ISSO: \"BORA, \" + CUMPADE + \"!\"\nSAINDO DA JAULA";
 
   /*global CodeMirror */
-  
+
   var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     lineNumbers: true,
     styleActiveLine: true,
@@ -70,30 +75,6 @@
     mode: "javascript",
     theme: "base16-dark"
   });
-
-  // Retorna uma string hexadecimal com tamanho 'length'
-  function random_hex_name(length) {
-    var crypto = require("crypto");
-    return crypto.randomBytes(Math.ceil(length / 2)).toString('hex').slice(0, length);
-  }
-
-  // Executa o codigo com 'name'
-  function execute(name) {
-
-  }
-
-  function run_code() {
-    const name = random_hex_name(30);
-    const fs = require("fs");
-    const contents = document.getElementById("code").textContent;
-    fs.writeFile("text/code-" + name, contents, function(error) {
-      if (error != null) {
-        document.getElementById("result").textContent = "Erro, cumpade! " + error;
-        return;
-      }
-      document.getElementById("result").textContent = execute(name);
-    });
-  }
 </script>
 
 </html>

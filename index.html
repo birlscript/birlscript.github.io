@@ -76,13 +76,12 @@
 
   window.addEventListener('load', function() {
     var textArea = document.getElementById('code');
-    var webSocket = new WebSocket('ws://birlscript-site-lazpeng.c9users.io:9090');
+    var webSocket = new WebSocket('wss://birlscript-site-lazpeng.c9users.io:9090');
     var ultimoCodigo = "";
-    
-    document.getElementById("result").textContent = "Interpretador ONLINE";
 
     webSocket.addEventListener('open', function() {
       console.log('conectado');
+      document.getElementById("result").textContent = "Interpretador ONLINE";
     });
 
     webSocket.addEventListener('message', function(msg) {
@@ -91,9 +90,9 @@
     });
 
     document.getElementById('send').addEventListener('click', function() {
-      if (textArea.value != ultimoCodigo) {
+      if (textArea.textContent != ultimoCodigo) {
         var json = {
-          codigo: textArea.value
+          codigo: textArea.textContent
         };
         webSocket.send(JSON.stringify(json));
         ultimoCodigo = json.codigo;

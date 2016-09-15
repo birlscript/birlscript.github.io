@@ -32,14 +32,14 @@
       </header>
 
       <section id="downloads" class="clearfix">
-        <a href="https://github.com/birlscript/birlscript" id="view-on-github" class="button"><span>Repo no GitHub</span></a>
+        <a href="https://github.com/birlscript/birlscript" id="view-on-github" class="button"><span>GitHub</span></a>
       </section>
 
       <hr>
 
       <section id="main_content">
         <h1>
-            <a id="birlscript" class="anchor" href="#birlscript" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span>BIRLSCRIPT</a>
+          <a id="birlscript" class="anchor" href="#birlscript" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span>BIRLSCRIPT</a>
         </h1>
         <p><strong>Versão: </strong>1.1.4</p>
         <p>É a linguagem de programação dos codebuilders, que não saem de casa sem codar pra caralho!</p>
@@ -48,17 +48,15 @@
         <br>
         <textarea id="code" style="resize: none; text-align: left"></textarea>
         <center>
-          <textarea id="result" style="width: 95%; background-color: #282828; color: white; font-family: arial; font-size: 16px; resize: none" readonly>Aguardando...</textarea>
+          <textarea id="result" style="width: 95%; background-color: #282828; color: white; font-family: arial; font-size: 16px; resize: none" readonly></textarea>
           <br>
-          <input type="submit" class="button" name="insert" value="Rodar" />
+          <input type="submit" class="button" id="send" value="Rodar" />
         </center>
       </section>
 
       <footer>
         Copyleft (c) 2016 Rafael R Nakano, <a href="mailto:mseqs@bsd.com.br">mseqs@bsd.com.br</a>, nenhum direito reservado.
       </footer>
-
-
     </div>
   </div>
 </body>
@@ -75,6 +73,35 @@
     mode: "javascript",
     theme: "base16-dark"
   });
+
+  console.log("olar");
+
+  window.addEventListener('load', function() {
+    var textArea = document.getElementById('code');
+    var webSocket = new WebSocket('ws://127.0.0.1:9090');
+    var ultimoCodigo = "";
+    
+    document.getElementById("result").textContent = "Interpretador ONLINE";
+
+    webSocket.addEventListener('open', function() {
+      console.log('conectado');
+    });
+
+    webSocket.addEventListener('message', function(msg) {
+      var json = JSON.parse(msg.data);
+      document.getElementById('result').innerHTML = json['output'];
+    });
+
+    document.getElementById('send').addEventListener('click', function() {
+      if (textArea.value != ultimoCodigo) {
+        var json = {
+          codigo: textArea.value
+        };
+        webSocket.send(JSON.stringify(json));
+        ultimoCodigo = json.codigo;
+      }
+    });
+  })
 </script>
 
 </html>

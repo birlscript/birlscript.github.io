@@ -50,7 +50,7 @@
         <center>
           <textarea id="result" style="width: 95%; background-color: #282828; color: white; font-family: sans-serif; font-size: 16px; resize: none" readonly></textarea>
           <br>
-          <input type="submit" class="button" id="send" value="Rodar" />
+          <button id="send">Rodar</button>
         </center>
       </section>
 
@@ -75,8 +75,7 @@
   });
 
   window.addEventListener('load', function() {
-    var textArea = document.getElementById('code');
-    var webSocket = new WebSocket('wss://birlscript-site-lazpeng.c9users.io:9090');
+    var webSocket = new WebSocket('wss://birlscript-site-lazpeng.c9users.io:8080');
     var ultimoCodigo = "";
 
     webSocket.addEventListener('open', function() {
@@ -90,12 +89,13 @@
     });
 
     document.getElementById('send').addEventListener('click', function() {
-      if (textArea.textContent != ultimoCodigo) {
+      var code = editor.getValue();
+      if (code != ultimoCodigo) {
         var json = {
-          codigo: textArea.textContent
+          codigo: code
         };
         webSocket.send(JSON.stringify(json));
-        ultimoCodigo = json.codigo;
+        ultimoCodigo = code;
       }
     });
   })

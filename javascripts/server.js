@@ -4,7 +4,7 @@ const child = require('child_process');
  
 var tempFileNum = 0;
 var interpretadorBirl = 'bin/birlscript';
-var webSocketServer = new webSocket.Server({port:9090});
+var webSocketServer = new webSocket.Server({port:8080});
  
 webSocketServer.on('connection', function(cliente) {
     cliente.on('message', function(message) {

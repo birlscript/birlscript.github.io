@@ -48,7 +48,7 @@
         <br>
         <textarea id="code" style="resize: none; text-align: left"></textarea>
         <center>
-          <textarea id="result" style="width: 95%; background-color: #282828; color: white; font-family: arial; font-size: 16px; resize: none" readonly></textarea>
+          <textarea id="result" style="width: 95%; background-color: #282828; color: white; font-family: sans-serif; font-size: 16px; resize: none" readonly></textarea>
           <br>
           <input type="submit" class="button" id="send" value="Rodar" />
         </center>
@@ -74,11 +74,9 @@
     theme: "base16-dark"
   });
 
-  console.log("olar");
-
   window.addEventListener('load', function() {
     var textArea = document.getElementById('code');
-    var webSocket = new WebSocket('ws://127.0.0.1:9090');
+    var webSocket = new WebSocket('ws://birlscript-site-lazpeng.c9users.io:9090');
     var ultimoCodigo = "";
     
     document.getElementById("result").textContent = "Interpretador ONLINE";

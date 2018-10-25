@@ -1,0 +1,74 @@
+#content {
+  width: 90%;
+  height: 75%;
+  margin: 5px auto;
+}
+
+.panel {
+  width: 45%;
+  min-height: 500px;
+}
+
+#content #left {
+  float: left;
+}
+
+#content #right {
+  float: right;
+}
+
+.panel h3 {
+  font-family: Roboto, sans-serif;
+  font-size: 22px;
+  color: #EEE;
+  text-align: center;
+  margin: 0px auto;
+  margin-top: 10px;
+}
+
+.panel h4 {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  color: #DDD;
+  text-align: left;
+  margin: 3px;
+}
+
+.panel .separator {
+  margin: 10px auto;
+}
+
+.CodeMirror {
+  width: 100%;
+  margin: 0px 0px;
+}
+
+#result {
+  width: 100%;
+  padding: 3px 3px;
+  margin: 0 auto;
+  border-radius: 5px;
+  background-color: #282828;
+  color: #EEE;
+  font-family: sans-serif;
+  font-size: 16px;
+  resize: none;
+}
+
+#run {
+  width: 30%;
+  height: 10%;
+  margin: 5px auto;
+}
+
+.config {
+  margin: 0 auto;
+}
+
+.config h4 {
+  display: inline-block;
+}
+
+.config .option {
+  display: inline-block;
+}

@@ -1,0 +1,35 @@
+#header {
+    margin: 0px auto;
+    width: 100%;
+    background-color: #473335;
+    padding: 2px 0px;
+}
+
+#header li {
+    display: inline-block;
+    padding: 5px 5px;
+    border-bottom: 1px solid #FFFFC7;
+}
+
+#header li a {
+    text-decoration: none;
+    color: #FFFFC7;
+    font-family : 'Roboto', serif;
+    font-size: 18px;
+}
+
+#header #active {
+    border-bottom-color: #FCAA67;
+}
+
+#header #active a {
+    color: #FCAA67;
+}
+
+#header li a:hover, #header #active a:hover {
+    color: #548687;
+}
+
+#header li:hover, #header #active:hover {
+    border-bottom-color: #548687;
+}

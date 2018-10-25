@@ -1,104 +1,146 @@
 <!DOCTYPE html>
-<html lang="pt_BR">
-
-<head>
-  <meta charset='utf-8'>
-  <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-  <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-  <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  <!-- CodeMirror stuff -->
-  <link rel="stylesheet" type="text/css" href="codemirror/lib/codemirror.css">
-  <script type="text/javascript" src="codemirror/lib/codemirror.js"></script>
-  <script type="text/javascript" src="https://cdn.rawgit.com/codemirror/CodeMirror/master/mode/xml/xml.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="stylesheets/themes/main.css">
-  <script src="codemirror/mode/javascript/javascript.js"></script>
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
-  <title>BIRLSCRIPT</title>
-</head>
-
-<body>
-  <div id="container">
-    <div class="inner">
-
-      <header>
-        <h1>BIRLSCRIPT</h1>
-      </header>
-
-      <section id="downloads" class="clearfix">
-        <a href="https://github.com/birlscript/birlscript" id="view-on-github" class="button"><span>GitHub</span></a>
-      </section>
-
-      <hr>
-
-      <section id="main_content">
-        <h1>
-          <a id="birlscript" class="anchor" href="#birlscript" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span>BIRLSCRIPT</a>
-        </h1>
-        <p><strong>Versão: </strong>1.2.0</p>
-        <p>É a linguagem de programação dos codebuilders, que não saem de casa sem codar pra caralho!</p>
-        <br>
-        <p>Se você se sente apto pro desafio, vá em frente e teste no console abaixo. Veja <a href="#">tutoriais e mais exemplos</a>.</p>
-        <br>
-        <textarea id="code" style="resize: none; text-align: left"></textarea>
-        <center>
-          <textarea id="result" style="width: 95%; background-color: #282828; color: white; font-family: sans-serif; font-size: 16px; resize: none" readonly></textarea>
-          <br>
-          <button id="send">Executa</button>
-        </center>
-      </section>
-
-      <footer>
-        Copyright (r) 2016, 2017 Rafael R Nakano, <a href="mailto:lazpeng@gmail.com">lazpeng@gmail.com</a>.
-      </footer>
-    </div>
-  </div>
-</body>
-
-<script>
-  document.getElementById("code").textContent = "JAULA SHOW\n\tCE QUER VER ISSO: \"BORA, \" + CUMPADE + \"!\"\nSAINDO DA JAULA";
-
-  /*global CodeMirror */
-
-  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-    lineNumbers: true,
-    styleActiveLine: true,
-    matchBrackets: true,
-    mode: "javascript",
-    theme: "base16-dark"
-  });
-
-  window.addEventListener('load', function() {
-    var webSocket = new WebSocket('wss://lit-wave-58325.herokuapp.com');
-    var ultimoCodigo = "";
-
-    webSocket.addEventListener('open', function() {
-      console.log('conectado');
-      document.getElementById("result").textContent = "Interpretador ONLINE";
-    });
-
-    webSocket.addEventListener('message', function(msg) {
-      var json = JSON.parse(msg.data);
-      document.getElementById('result').innerHTML = json['output'];
-    });
-
-    document.getElementById('send').addEventListener('click', function() {
-      var code = editor.getValue();
-      if (code != ultimoCodigo) {
-        var json = {
-          codigo: code
-        };
-        webSocket.send(JSON.stringify(json));
-        ultimoCodigo = code;
-      }
-    });
-  })
-</script>
-
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>BirlScript</title>
+        <link rel="stylesheet" href="css/basic.css"  type="text/css">
+        <link rel="stylesheet" href="css/header.css" type="text/css">
+        <link rel="stylesheet" href="css/index.css"  type="text/css">
+        <link rel="stylesheet" href="css/footer.css" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <!-- CodeMirror stuff -->
+        <link rel="stylesheet" type="text/css" href="codemirror/lib/codemirror.css">
+        <script type="text/javascript" src="codemirror/lib/codemirror.js"></script>
+        <script src="codemirror/mode/javascript/javascript.js"></script>
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+        <!-- Themes -->
+        <link rel="stylesheet" type="text/css" href="css/theme/dracula.css">
+        <link rel="stylesheet" type="text/css" href="css/theme/base16-dark.css">
+        <link rel="stylesheet" type="text/css" href="css/theme/base16-light.css">
+        <link rel="stylesheet" type="text/css" href="css/theme/ambiance.css">
+        <link rel="stylesheet" type="text/css" href="css/theme/material.css">
+        <link rel="stylesheet" type="text/css" href="css/theme/paraiso-dark.css">
+        <link rel="stylesheet" type="text/css" href="css/theme/paraiso-light.css">
+        <script type="text/javascript">
+            /*global CodeMirror */
+            var editor;
+            
+            let default_snippet = "helloworld";
+            
+            var snippets = [];
+            snippets["helloworld"] = "JAULA SHOW\n\tCE QUER VER ISSO: \"VEM, CUMPADE!\"\nSAINDO DA JAULA";
+            snippets["fatorial"] = "JAULA FATORIAL (NUMERO: BATATA DOCE, ATUAL : BATATA DOCE)\
+                                    \n\tE ELE QUE A GENTE QUER: NUMERO, 1 \
+                                    \n\tMENOR OU E MEMO: \
+                                        \n\t\tBIRL: ATUAL \
+                                    \n\tFIM \
+                                    \n\tBORA: NUMERO, NUMERO - 1 \
+                                    \n\tBORA: ATUAL, ATUAL * NUMERO \
+                                    \n\tE HORA DO: FATORIAL, NUMERO, ATUAL \
+                                    \n\tBIRL: TREZE \
+                                    \n\tSAINDO DA JAULA \
+                                    \n\
+                                    \nJAULA SHOW \
+                                        \n\tVEM: NUMERO, 4 \
+                                        \n\tCE QUER VER: \"FATORIAL DE \", NUMERO, \" É: \" \
+                                        \n\tE HORA DO: FATORIAL, NUMERO, NUMERO \
+                                        \n\tCE QUER VER ISSO: TREZE \
+                                    \n\tSAINDO DA JAULA\
+                                    ";
+        
+            function themeChanged() {
+                let theme = document.getElementById("theme").value;
+                
+                editor.setOption("theme", theme);
+            }
+            
+            function snippetChanged() {
+                let snippet = document.getElementById("snippet").value;
+                
+                var content;
+                
+                if (!(snippet in snippets)) {
+                    content = snippets[default_snippet];
+                } else {
+                    content = snippets[snippet];
+                }
+                
+                editor.setValue(content);
+            }
+            
+            window.addEventListener('load', function() {
+                editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+                    lineNumbers: true,
+                    styleActiveLine: true,
+                    matchBrackets: true,
+                    mode: "javascript",
+                    theme: document.getElementById("theme").value,
+                });
+                
+                themeChanged();
+                snippetChanged();
+                
+                document.getElementById('run').addEventListener('click', function() {
+                    var code = editor.getValue();
+                    var webSocket = new WebSocket('wss://birl-server.herokuapp.com');
+                    var json = {
+                      source: code
+                    };
+                    webSocket.addEventListener('open', function() {
+                        webSocket.send(JSON.stringify(json));
+                    });
+                    webSocket.addEventListener('message', function(msg) {
+                        var json = JSON.parse(msg.data);
+                        document.getElementById('result').innerHTML = json['output'];
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <ul id="header">
+            <li id="active"><a href="#">Início</a></li>
+            <li><a href="doc.html">Documentação</a></li>
+            <li><a href="https://github.com/birlscript/birlscript">GitHub</a></li>
+        </ul>
+        <div id="content">
+            <div class="panel" id="left">
+                <h3>Editor</h3>
+                <hr class="separator">
+                <textarea id="code"></textarea>
+                </div>
+            <div class="panel" id="right">
+                <h3>Opções</h3>
+                <hr class="separator">
+                <h4>Output:</h4>
+                <textarea id="result" rows="5" readonly></textarea>
+                <div class="config">
+                    <h4>Tema do editor:</h4>
+                    <select class="option" id="theme" onchange="themeChanged()">
+                        <option value="paraiso-dark">Paraiso Dark</option>
+                        <option value="paraiso-light">Paraiso Light</option>
+                        <option value="dracula">Dracula</option>
+                        <option value="base16-dark">Base16 Dark</option>
+                        <option value="base16-light">Base16 Light</option>
+                        <option value="ambiance">Ambiance</option>
+                        <option value="material">Material</option>
+                    </select>
+                </div>
+                <div class="config">
+                    <h4>Exemplos:</h4>
+                    <select class="option" id="snippet" onchange="snippetChanged()">
+                        <option value="helloworld">Hello, world!</option>
+                        <option value="fatorial">Fatorial</option>
+                    </select>
+                </div>
+                <center>
+                    <button id="run">Executar</button>
+                </center>
+            </div>
+        </div>
+        <div id="footer">
+            <p>Rafael Rodrigues Nakano - <a href="mailto:lazpeng@gmail.com">Contato</a>. Como dá pra perceber, eu não sou webdev.</p>
+        </div>
+    </body>
 </html>

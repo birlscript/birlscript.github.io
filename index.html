@@ -30,24 +30,8 @@
             
             var snippets = [];
             snippets["helloworld"] = "JAULA SHOW\n\tCE QUER VER ISSO: \"VEM, CUMPADE!\"\nSAINDO DA JAULA";
-            snippets["fatorial"] = "JAULA FATORIAL (NUMERO: BATATA DOCE, ATUAL : BATATA DOCE)\
-                                    \n\tE ELE QUE A GENTE QUER: NUMERO, 1 \
-                                    \n\tMENOR OU E MEMO: \
-                                        \n\t\tBIRL: ATUAL \
-                                    \n\tFIM \
-                                    \n\tBORA: NUMERO, NUMERO - 1 \
-                                    \n\tBORA: ATUAL, ATUAL * NUMERO \
-                                    \n\tE HORA DO: FATORIAL, NUMERO, ATUAL \
-                                    \n\tBIRL: TREZE \
-                                    \n\tSAINDO DA JAULA \
-                                    \n\
-                                    \nJAULA SHOW \
-                                        \n\tVEM: NUMERO, 4 \
-                                        \n\tCE QUER VER: \"FATORIAL DE \", NUMERO, \" É: \" \
-                                        \n\tE HORA DO: FATORIAL, NUMERO, NUMERO \
-                                        \n\tCE QUER VER ISSO: TREZE \
-                                    \n\tSAINDO DA JAULA\
-                                    ";
+            snippets["fatorial"]   = "JAULA FATORIAL (NUMERO: BATATA DOCE, ATUAL : BATATA DOCE)\n\tE ELE QUE A GENTE QUER: NUMERO, 1\n\tMENOR OU E MEMO:\n\t\tBIRL: ATUAL\n\tFIM\n\tBORA: NUMERO, NUMERO - 1\n\tBORA: ATUAL, ATUAL * NUMERO\n\tE HORA DO: FATORIAL, NUMERO, ATUAL\n\tBIRL: TREZE\n\tSAINDO DA JAULA\n\nJAULA SHOW\n\tVEM: NUMERO, 4\n\tCE QUER VER: \"FATORIAL DE \", NUMERO, \" É: \"\n\tE HORA DO: FATORIAL, NUMERO, NUMERO\n\tCE QUER VER ISSO: TREZE\n\tSAINDO DA JAULA";
+            snippets["fibonacci"]  = "JAULA FIBONACCI(NUMERO: BATATA DOCE)\n\tE ELE QUE A GENTE QUER: NUMERO, 1\n\tMENOR OU E MEMO:\n\t\tBIRL: NUMERO\n\tFIM\n\tVEM: RESULTADO, 0\n\tE HORA DO: FIBONACCI, NUMERO - 1\n\tBORA: RESULTADO, TREZE\n\tE HORA DO: FIBONACCI, NUMERO - 2\n\tBIRL: RESULTADO + TREZE\nSAINDO DA JAULA\n\nJAULA PRINTA_FIBONACCI(TOTAL: BATATA DOCE, VEZES: BATATA DOCE)\n\tE ELE QUE A GENTE QUER: TOTAL, VEZES\n\tE ELE MEMO:\n\t\tBIRL\n\tFIM\n\tE HORA DO: FIBONACCI, TOTAL\n\tCE QUER VER ISSO: TREZE\n\tE HORA DO: PRINTA_FIBONACCI, TOTAL + 1, VEZES\nSAINDO DA JAULA\n\nJAULA SHOW\n\tVEM: VEZES, 13\n\tE HORA DO: PRINTA_FIBONACCI, 0, VEZES\nSAINDO DA JAULA";
         
             function themeChanged() {
                 let theme = document.getElementById("theme").value;
@@ -89,10 +73,13 @@
                     };
                     webSocket.addEventListener('open', function() {
                         webSocket.send(JSON.stringify(json));
+                        // FIXME: The server is returning each line output separately. fix that then remove this
+                        document.getElementById("result").value = "";
                     });
                     webSocket.addEventListener('message', function(msg) {
                         var json = JSON.parse(msg.data);
-                        document.getElementById('result').innerHTML = json['output'];
+                        // and this
+                        document.getElementById('result').value += json['output'];
                     });
                 });
             });
@@ -114,7 +101,7 @@
                 <h3>Opções</h3>
                 <hr class="separator">
                 <h4>Output:</h4>
-                <textarea id="result" rows="5" readonly></textarea>
+                <textarea id="result" rows="10" readonly></textarea>
                 <div class="config">
                     <h4>Tema do editor:</h4>
                     <select class="option" id="theme" onchange="themeChanged()">
@@ -132,6 +119,7 @@
                     <select class="option" id="snippet" onchange="snippetChanged()">
                         <option value="helloworld">Hello, world!</option>
                         <option value="fatorial">Fatorial</option>
+                        <option value="fibonacci">Sequência Fibonacci</option>
                     </select>
                 </div>
                 <center>

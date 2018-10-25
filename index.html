@@ -53,6 +53,24 @@
                 editor.setValue(content);
             }
             
+            function setError() {
+                document.getElementById('result').setAttribute('color', 'red');
+            }
+            
+            function reset() {
+                document.getElementById('result').setAttribute('color', '#EEE');
+            }
+            
+            function processResult(json) {
+                if (json.hasOwnProperty('error')) {
+                    setError();
+                    document.getElementById('result').value = json['error'];
+                } else {
+                    reset();
+                    document.getElementById('result').value = json['output'];
+                }
+            }
+            
             window.addEventListener('load', function() {
                 editor = CodeMirror.fromTextArea(document.getElementById("code"), {
                     lineNumbers: true,
@@ -73,13 +91,10 @@
                     };
                     webSocket.addEventListener('open', function() {
                         webSocket.send(JSON.stringify(json));
-                        // FIXME: The server is returning each line output separately. fix that then remove this
-                        document.getElementById("result").value = "";
                     });
                     webSocket.addEventListener('message', function(msg) {
                         var json = JSON.parse(msg.data);
-                        // and this
-                        document.getElementById('result').value += json['output'];
+                        processResult(json);
                     });
                 });
             });
